@@ -49,13 +49,36 @@ public class UserMap : IEntityTypeConfiguration<User>
             .HasMaxLength(500);
 
         // Slug
-        builder.Property(x => x.Slug);
+        builder.Property(x => x.Slug)
+            .IsRequired()
+            .HasColumnName("Slug")
+            .HasColumnType("NVARCHAR")
+            .HasMaxLength(150);
+        
         // Index Slug
         builder.HasIndex(x => x.Slug, "IX_User_Slug")
             .IsUnique();
 
         // Image
-        builder.Property(x => x.Image);
+        builder.Property(x => x.Image)
+            .IsRequired(false)
+            .HasColumnName("Image")
+            .HasColumnType("NVARCHAR")
+            .HasMaxLength(250);
+        
+        // CreatedDate
+        builder.Property(x => x.CreatedDate)
+            .IsRequired()
+            .HasColumnName("CreatedDate")
+            .HasColumnType("SMALLDATETIME")
+            .HasDefaultValueSql("GETDATE()");
+        
+        // LastUpdateDate
+        builder.Property(x => x.LastUpdateDate)
+            .IsRequired()
+            .HasColumnName("LastUpdateDate")
+            .HasColumnType("SMALLDATETIME")
+            .HasDefaultValueSql("GETDATE()");
 
     }
 }

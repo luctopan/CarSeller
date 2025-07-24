@@ -47,34 +47,38 @@ public class CarMap : IEntityTypeConfiguration<Car>
             .HasColumnName("Year")
             .HasColumnType("INT");
         
+        // Price
+        builder.Property(x => x.Price)
+            .IsRequired()
+            .HasColumnName("Price")
+            .HasColumnType("DECIMAL(18,2)");
+        
         // Image
         builder.Property(x => x.Image)
-            .IsRequired()
+            .IsRequired(false)
             .HasColumnName("Image")
-            .HasColumnType("NVARCHAR");
+            .HasColumnType("NVARCHAR")
+            .HasMaxLength(250);
         
+        // CreatedDate
         builder.Property(x => x.CreatedDate)
             .IsRequired()
             .HasColumnName("CreatedDate")
             .HasColumnType("SMALLDATETIME")
             .HasDefaultValueSql("GETDATE()");
         
+        // LastUpdateDate
         builder.Property(x => x.LastUpdateDate)
             .IsRequired()
             .HasColumnName("LastUpdateDate")
             .HasColumnType("SMALLDATETIME")
             .HasDefaultValueSql("GETDATE()");
         
-        // Price
-        builder.Property(x => x.Price)
-            .IsRequired()
-            .HasColumnName("Price")
-            .HasColumnType("FLOAT");
-        
         // Relacionamentos
         builder.HasOne(x => x.Owner)
             .WithMany(x => x.Cars)
-            .HasConstraintName("FK_Car_Owner");
-
+            .HasForeignKey(x => x.OwnerId)
+            .OnDelete(DeleteBehavior.Restrict);
+        
     }
 }

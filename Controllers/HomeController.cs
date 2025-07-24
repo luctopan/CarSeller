@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace CarSeller.Controllers;
 
 [ApiController]
+[Route("")]
 public class HomeController : ControllerBase
 {
-    [HttpGet("/")]
-    public string Get()
+    [HttpGet("")]
+    public IActionResult Get()
     {
-        return "API is running.";
+        return Ok();
     }
 }

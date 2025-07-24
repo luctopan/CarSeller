@@ -4,14 +4,16 @@ using CarSeller.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarSeller.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250718000913_AddOwnerIdToCar")]
+    partial class AddOwnerIdToCar
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,8 +43,8 @@ namespace CarSeller.Migrations
                         .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Image")
-                        .HasMaxLength(250)
-                        .HasColumnType("NVARCHAR(250)")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR")
                         .HasColumnName("Image");
 
                     b.Property<DateTime>("LastUpdateDate")
@@ -66,8 +68,8 @@ namespace CarSeller.Migrations
                     b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("DECIMAL(18,2)")
+                    b.Property<double>("Price")
+                        .HasColumnType("FLOAT")
                         .HasColumnName("Price");
 
                     b.Property<int>("Year")
@@ -95,12 +97,6 @@ namespace CarSeller.Migrations
                         .HasColumnType("NVARCHAR(500)")
                         .HasColumnName("Bio");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("SMALLDATETIME")
-                        .HasColumnName("CreatedDate")
-                        .HasDefaultValueSql("GETDATE()");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -108,15 +104,8 @@ namespace CarSeller.Migrations
                         .HasColumnName("Email");
 
                     b.Property<string>("Image")
-                        .HasMaxLength(250)
-                        .HasColumnType("NVARCHAR(250)")
-                        .HasColumnName("Image");
-
-                    b.Property<DateTime>("LastUpdateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("SMALLDATETIME")
-                        .HasColumnName("LastUpdateDate")
-                        .HasDefaultValueSql("GETDATE()");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -132,9 +121,7 @@ namespace CarSeller.Migrations
 
                     b.Property<string>("Slug")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("NVARCHAR(150)")
-                        .HasColumnName("Slug");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -149,7 +136,7 @@ namespace CarSeller.Migrations
                     b.HasOne("CarSeller.Models.User", "Owner")
                         .WithMany("Cars")
                         .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Owner");
